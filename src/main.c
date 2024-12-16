@@ -89,53 +89,31 @@ int strcut(char* str, char sep, char **tokens, size_t max) {
 // Optionnel
 int strcut_s(char* str, char sep, char** tokens, size_t max) {
 	size_t count=0;
-	char * current=str;
-	char * last_char = &str[strlen(str)-1];
+  size_t len=strlen(str);
   char quot=0;
-	while (current<=last_char && count<=max){
-		if (!count){
-			tokens[count++]=current;
-		}else if ( (*current=='"' || *current=='\'')  &&  (!quot || quot==*current) ){
-      quot=quot?0:*current;
-    }else if (!quot && *current==sep) {
-			*current='\0';
-			tokens[count++]=++current;
-		}
-		current++; 
-	}
+  char quot_prev=0;
+  char new=1;
+  for (size_t i = 0 ; i < len ;i++){
+    if ( (str[i]=='"' || str[i]=='\'')  &&  (!quot || quot==str[i]) ){
+      quot_prev=quot?quot:0;
+      quot=quot?0:str[i];
+    }else if (new){
+      if (count >= max) return count;
+      tokens[count++]=&str[i];
+      new=0;
+    }else if (!quot && (str[i]==sep || i==len-1)){
+      if ( i>0 && str[i-1]==quot_prev)
+        str[i-1]='\0';
+      else
+        str[i]='\0';
+      quot_prev=0;
+      new=1;
+    }
+  }
 	return count;
 }
 
-int strcut_s_aziz(char *str, char sep, char **tokens, size_t max)
-{
-    size_t token_cmp = 0; // Compteur de tokens
-    size_t begin = 0;     // Index du token
-    int inQuotes = 0;     // Flag pour savoir si on est dans des quotes
-    tokens[0] = '\0'; // Initialisation du tableau tokens
 
-    // Pour chaque caractère de la chaine
-    for (size_t i = 0; token_cmp < max; i++)
-    {
-        // Si on a trouvé un séparateur
-        if (str[i] == '\"' || str[i] == '\'')
-        {
-            // On est dans des quotes (" ou ')
-            inQuotes = !inQuotes;
-        }
-        else if (!inQuotes && str[i] == sep)
-        {
-            // On est toujours pas dans des quotes et on a trouvé un séparateur
-            tokens[token_cmp++] = str + begin; // Ajouter le token au tableau
-            str[i] = '\0';                     // Remplacer le séparateur par un caractère vide
-            begin = i + 1;                    
-        }
-    }
-
-    tokens[token_cmp++] = str + begin; // Ajouter le token au tableau
-    tokens[token_cmp] = NULL; // Terminer le tableau de tokens
-
-    return token_cmp;
-}
 
 
 int separate_s(char* str, char* s, size_t max) {
@@ -233,7 +211,7 @@ int substenv(char* str, size_t max) {
 int main() {
   char line[512];
 
-  strcpy(line, "ana 'najwa P' stof");
+  strcpy(line, "ana 'najwa P' \"A stof\"");
 	printf("BEFORE => '%s'\n", line);
 
 
