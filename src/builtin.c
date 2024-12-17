@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char *functions[] = {"cd", "exit", "export", "unset",
+const char *functions[] = {"cd", "exit", "export",
 						   NULL}; // Tableau des commandes internes
 
 int is_builtin(const char *cmd) {
