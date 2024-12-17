@@ -38,6 +38,7 @@ int builtin(cmd_t* cmd) {
   if (strcmp(cmd->argv[0], "exit") == 0) {
       return exit_shell(cmd->argv[1]?(atoi(cmd->argv[1])):0, cmd->stderr); // Exit avec code 
   }
+  return 0;
 }
 
 int cd(const char* path, int fderr) {
