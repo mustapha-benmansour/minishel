@@ -53,7 +53,7 @@ static void set_fdclose(cmd_t *cmd, int fd) {
 	cmd->fdclose[i] = fd;
 }
 
-static int resolve_stdfd(cmd_t *cmd, char *next_tk, int mode, int *outptr) {
+static int open_fd(cmd_t *cmd, char *next_tk, int mode, int *outptr) {
 	int fd = open(next_tk, mode, 0644);
 	if (fd != -1) {
 		set_fdclose(cmd, *outptr);
@@ -89,10 +89,10 @@ static int resolve_token(char *tk, char *next_tk, cmd_t *cmd, cmd_t *next_cmd) {
 			return RS_PRC;
 		}
 		if (*tk == '>')
-			return resolve_stdfd(cmd, next_tk, O_WRONLY | O_CREAT | O_TRUNC,
+			return open_fd(cmd, next_tk, O_WRONLY | O_CREAT | O_TRUNC,
 													 &cmd->stdout);
 		if (*tk == '<')
-			return resolve_stdfd(cmd, next_tk, O_RDONLY, &cmd->stdin);
+			return open_fd(cmd, next_tk, O_RDONLY, &cmd->stdin);
 	} else if (sz == 2) {
 		if (*tk == '|' && tk[1] == '|') {
 			cmd->next_failure = next_cmd;
@@ -103,13 +103,13 @@ static int resolve_token(char *tk, char *next_tk, cmd_t *cmd, cmd_t *next_cmd) {
 			return RS_PRC;
 		}
 		if (*tk == '2' && tk[1] == '>')
-			return resolve_stdfd(cmd, next_tk, O_WRONLY | O_CREAT | O_TRUNC,
+			return open_fd(cmd, next_tk, O_WRONLY | O_CREAT | O_TRUNC,
 													 &cmd->stderr);
 		if (*tk == '>' && tk[1] == '>')
-			return resolve_stdfd(cmd, next_tk, O_WRONLY | O_CREAT | O_APPEND,
+			return open_fd(cmd, next_tk, O_WRONLY | O_CREAT | O_APPEND,
 													 &cmd->stdout);
 		if (*tk == '<' && tk[1] == '<')
-			return resolve_stdfd(cmd, next_tk, O_RDONLY, &cmd->stdin);
+			return open_fd(cmd, next_tk, O_RDONLY, &cmd->stdin);
 
 	} else if (sz == 4 && *tk == '2' && tk[1] == '>' &&
 						 ((tk[2] == '&' && tk[3] == '1') ||
