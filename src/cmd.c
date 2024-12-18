@@ -156,7 +156,7 @@ void close_fds(cmd_t *p) {
 }
 
 int exec_cmd(cmd_t *p) {
-	pid_t pid = fork(); // Création d'un nouveau processus fils (fork)
+	pid_t pid = fork(); 
 	if (pid < 0)
 		return -1;
 	if (pid) {
@@ -170,15 +170,14 @@ int exec_cmd(cmd_t *p) {
 		if (p->stderr != STDERR_FILENO) {
 			dup2(p->stderr, STDERR_FILENO);
 		}
-		close_fds(p); // redirections are done ! fds are not longer needed
+		close_fds(p); 
 		exit(execvp(p->path, p->argv) == -1);
 	} else {
-		// prent
+		// parent
 		p->pid = pid;
-		/*if (p->wait){
+		if (p->wait){
 			if (waitpid(pid, &p->status, 0) == -1) return -1 ;
-		}else */
-		if (!p->wait)
+		}else 
 			printf("proc %d in background\n", pid);
 		close_fds(p);
 	}
