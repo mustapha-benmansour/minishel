@@ -51,7 +51,21 @@ int main(int argc, char *argv[]) {
     if (cmdline[0]=='\0') 
       continue;
     //   - ajouter d'éventuels espaces autour de ; ! || && & ...
-    separate_s(cmdline,";|&<>",MAX_LINE_SIZE);
+    // 4
+    separate_s(cmdline,"2>&1",MAX_LINE_SIZE);
+    separate_s(cmdline,"2>-1",MAX_LINE_SIZE);
+    // 2
+    separate_s(cmdline,"||",MAX_LINE_SIZE);
+    separate_s(cmdline,"&&",MAX_LINE_SIZE);
+    separate_s(cmdline,">>",MAX_LINE_SIZE);
+    separate_s(cmdline,"<<",MAX_LINE_SIZE);
+    // 1
+    separate_s(cmdline,";",MAX_LINE_SIZE);
+    separate_s(cmdline,"|",MAX_LINE_SIZE);
+    separate_s(cmdline,"&",MAX_LINE_SIZE);
+    separate_s(cmdline,">",MAX_LINE_SIZE);
+    separate_s(cmdline,"<",MAX_LINE_SIZE);
+    
     //   - supprimer les doublons d'espaces
     clean(cmdline);
     //   - traiter les variables d'environnement
