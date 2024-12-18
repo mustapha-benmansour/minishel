@@ -133,7 +133,6 @@ int parse_cmd(char *tokens[], cmd_t *cmds, size_t max) {
 		if (result == RS_ERR)
 			return -1;
 		if (result == RS_PRC) {
-			cmds[prc_idx].argv[arg_idx] = NULL;
 			prc_idx++;
 			arg_idx = 0;
 		} else if (result == RS_TOK)
@@ -141,8 +140,10 @@ int parse_cmd(char *tokens[], cmd_t *cmds, size_t max) {
 		else if (result == RS_ARG) {
 			if (!cmds[prc_idx].path)
 				cmds[prc_idx].path = tokens[tok_idx];
-			else
+			else{
 				cmds[prc_idx].argv[arg_idx++] = tokens[tok_idx];
+				cmds[prc_idx].argv[arg_idx] = NULL;
+			}
 		}
 	}
 	return 0;
