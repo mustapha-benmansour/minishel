@@ -142,7 +142,6 @@ int parse_cmd(char *tokens[], cmd_t *cmds, size_t max) {
 				cmds[prc_idx].path = tokens[tok_idx];
 			else{
 				cmds[prc_idx].argv[arg_idx++] = tokens[tok_idx];
-				cmds[prc_idx].argv[arg_idx] = NULL;
 			}
 		}
 	}
