@@ -24,7 +24,7 @@
 
 
 
-int __main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
   char cmdline[MAX_LINE_SIZE]; // buffer des lignes de commandes
   char *cmdtoks[MAX_CMD_SIZE]; // "mots" de la ligne de commandes
   cmd_t cmds[MAX_CMD_SIZE];
