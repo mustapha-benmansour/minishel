@@ -17,3 +17,10 @@ make
 ```sh 
 make && ./minishell
 ```
+
+
+#### todo
+```
+implement substenv
+fix fd redirections
+```
