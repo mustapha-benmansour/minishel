@@ -173,7 +173,6 @@ int exec_cmd(cmd_t *p) {
 	} else {
 		// parent
 		p->pid = pid;
-		fflush(stdout);
 		if (p->wait){
 			if (waitpid(pid, &p->status, 0) == -1) return -1 ;
 		}else 
