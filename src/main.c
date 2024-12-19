@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     //   - supprimer les doublons d'espaces
     clean(cmdline);
     //   - traiter les variables d'environnement
-    //substenv(cmdline,MAX_LINE_SIZE);
+    substenv(cmdline,MAX_LINE_SIZE);
     // Découper la ligne dans cmdtoks
     strcut(cmdline,' ',cmdtoks,MAX_CMD_SIZE);
     // Traduire la ligne en structures cmd_t dans cmds
