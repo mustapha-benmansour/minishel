@@ -21,7 +21,7 @@ const char *functions[] = {"cd", "exit", "export",
 						   NULL}; // Tableau des commandes internes
 
 int is_builtin(const char *cmd) {
-	for (int i = 0; functions[i] != NULL;) {
+	for (int i = 0; functions[i] != NULL;i++) {
 		if (strcmp(functions[i], cmd) == 0)
 			return 1;
   	}

@@ -12,6 +12,7 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 
 int is_space(char c) { return c == ' ' || c == '\t'; }
@@ -110,19 +111,22 @@ int strcut_s(char *str, char sep, char **tokens, size_t max) {
 
 int separate_s(char *str, char *s, size_t max) {
 	size_t len = strlen(str);
-	int i, k;
-	for (k = 0; k < len && len + 2 <= max;) {
-		if (strchr(s, str[k]) != NULL) {
-			for (i = len + 1; i >= k + 1; i--)
-				str[i] = str[i - 2];
-			len += 2;
-			str[k + 2] = ' ';
-			str[k + 1] = str[k];
-			str[k] = ' ';
-			k += 3;
-			str[len] = '\0';
-		} else
-			k++;
+	int i, k, j;
+	char *op[64];
+	size_t op_len=strlen(s);
+	for (j = 0 ; op[j] ; j++){
+		for (k = 0; k < len && len + 2 <= max;) {
+			if (strncmp(&str[k],op[j],op_len) == 0) {
+				for (i = len ; i >= k + 1; i--)
+					str[i] = str[i - 1];
+				len += 2;
+				str[len+1] = ' ';
+				str[k] = ' ';
+				k += 2+op_len;
+				str[len] = '\0';
+			} else
+				k++;
+		}
 	}
 	return 0;
 }

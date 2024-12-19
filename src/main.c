@@ -65,11 +65,10 @@ int main(int argc, char *argv[]) {
     separate_s(cmdline,"&",MAX_LINE_SIZE);
     separate_s(cmdline,">",MAX_LINE_SIZE);
     separate_s(cmdline,"<",MAX_LINE_SIZE);
-    
     //   - supprimer les doublons d'espaces
     clean(cmdline);
     //   - traiter les variables d'environnement
-    substenv(cmdline,MAX_LINE_SIZE);
+    //substenv(cmdline,MAX_LINE_SIZE);
     // Découper la ligne dans cmdtoks
     strcut(cmdline,' ',cmdtoks,MAX_CMD_SIZE);
     // Traduire la ligne en structures cmd_t dans cmds
@@ -91,7 +90,7 @@ int main(int argc, char *argv[]) {
       }
       if (err) current->status=err;
       if (current->status){
-        if (!current->next_failure) break;
+        if (!current->next_failure) break; // exit with error
         current=current->next_failure;
       }else{
         if (current->next_success){

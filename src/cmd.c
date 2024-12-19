@@ -140,9 +140,7 @@ int parse_cmd(char *tokens[], cmd_t *cmds, size_t max) {
 		else if (result == RS_ARG) {
 			if (!cmds[prc_idx].path)
 				cmds[prc_idx].path = tokens[tok_idx];
-			else{
-				cmds[prc_idx].argv[arg_idx++] = tokens[tok_idx];
-			}
+			cmds[prc_idx].argv[arg_idx++] = tokens[tok_idx];
 		}
 	}
 	return 0;
@@ -159,7 +157,7 @@ int exec_cmd(cmd_t *p) {
 	pid_t pid = fork(); 
 	if (pid < 0)
 		return -1;
-	if (pid) {
+	if (pid==0) {
 		// child
 		if (p->stdin != STDIN_FILENO) {
 			dup2(p->stdin, STDIN_FILENO);
@@ -175,6 +173,7 @@ int exec_cmd(cmd_t *p) {
 	} else {
 		// parent
 		p->pid = pid;
+		fflush(stdout);
 		if (p->wait){
 			if (waitpid(pid, &p->status, 0) == -1) return -1 ;
 		}else 
